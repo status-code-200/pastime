@@ -1,0 +1,141 @@
+{% load staticfiles %}
+{% load material_form %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pastime</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+
+    <!--mdl-->
+    <link rel="stylesheet" href="{% static 'mdl/material.min.css' %}">
+    <script type="text/javascript" src="{% static 'mdl/material.min.js' %}"></script>
+
+    <!-- custom elements design -->
+    <link rel="stylesheet" href="{% static 'custom/css/main.css' %}">
+    <script type="text/javascript" src="{% static 'custom/js/main.js' %}"></script>
+
+    {% include 'material/includes/material_css.html' %}
+    <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
+    {% include 'material/includes/material_js.html' %}
+
+  </head>
+  <body>
+
+    {% if user.is_authenticated %}
+
+    <dialog class="mdl-dialog" style="width: 50%; margin: 0 auto;">
+      <h6 class="mdl-dialog__title" style="font-family: 'Noto Sans';">Создать событие</h6>
+      <div class="mdl-dialog__content">
+        <form method="POST">{% csrf_token %}
+          {% form %}{% endform %}
+          <div class="mdl-dialog__actions mdl-dialog__actions">
+            <button type="submit" class="save btn mdl-button" style="font-family: 'Noto Sans';">Создать</button>
+            <button type="button" class="mdl-button close" style="font-family: 'Noto Sans';">Закрыть</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    {% else %}
+
+    <dialog class="mdl-dialog" style="margin: 0 auto;">
+      <h6 class="mdl-dialog__title" style="text-align: center; font-family: 'Noto Sans';">Вход</h6>
+      <div class="mdl-dialog__content">
+        <form id="form-login" action="{% url 'login' %}" method="POST" accept-charset="UTF-8">
+          {% csrf_token %}
+          <div class="input-field col s12 required">
+            <label class="mdl-textfield__label"  for="username" style="text-align: center;">Логин</label>
+            <input class="mdl-textfield__input" type="text" name="username" value="" id="username"/>
+          </div>
+        </br>
+          <div class="input-field col s12 required">
+            <label class="mdl-textfield__label" for="password" style="text-align: center;">Пароль</label>
+            <input class="mdl-textfield__input" name="password" type="password" value="" id="password"/>
+          </div>
+          <div class="mdl-dialog__actions mdl-dialog__actions--full-width">
+            <button type="submit" class="save btn mdl-button" style="font-family: 'Noto Sans';">Зайти</button>
+            <button type="button" class="mdl-button close" style="text-align: center; font-family: 'Noto Sans';">Закрыть</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    {% endif %}
+
+    <div id="map"></div>
+      <div class="panel">
+          {% if user.is_authenticated %}
+          <button id="bnt-change-color" type="button" class="mdl-button mdl-button--raised mdl-js-button btn show-modal" style="font-family: 'Noto Sans';">Создать яркое событие</button>
+          <a href="{% url 'logUserOut' %}" class="mdl-button btn" style="font-family: 'Noto Sans';">Выйти</a>
+          {% else %}
+          <button type="button" class="mdl-button  mdl-button--raised mdl-js-button btn mdl-js-button show-modal" style="font-family: 'Noto Sans';">Принять участие</button>
+          {% endif %}
+      </div>
+
+    <script>
+      (function() {
+        'use strict';
+        var showSnackbarButton = document.querySelector('#bnt-change-color');
+        var handler = function(event) {
+          showSnackbarButton.style.backgroundColor = '';
+        };
+        showSnackbarButton.addEventListener('mouseover', function() {
+          'use strict';
+          showSnackbarButton.style.backgroundColor = '#' +
+              Math.floor(Math.random() * 0xFFFFFF).toString(16);
+        });
+      }());
+    </script>
+
+    <script>
+      var dialog = document.querySelector('.mdl-dialog');
+      var showModalButton = document.querySelector('.show-modal');
+      if (! dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+      }
+      showModalButton.addEventListener('click', function() {
+        dialog.showModal();
+      });
+      dialog.querySelector('.close').addEventListener('click', function() {
+        dialog.close();
+      });
+    </script>
+    <script>
+      {% for ev in events %}
+        var event_location = '{{ ev.event_location }}';
+
+        var lat_lng = event_location.slice(1, event_location.length-1).split(', ');
+
+        // var lats = [];
+        var latitude = Number(lat_lng[0]); //широта
+        lats.push(latitude);
+
+        // var lngs = [];
+        var longitude = Number(lat_lng[1]); //долгота
+        lngs.push(longitude);
+
+        // var events_names = [];
+        var event_name = '{{ ev.event_name }}';
+        events_names.push(event_name);
+
+        // var events_descriptions = [];
+        var event_description = '{{ ev.event_description }}';
+        events_descriptions.push(event_description);
+
+        // var events_organizers = [];
+        var event_organizer = '{{ ev.organizer }}';
+        events_organizers.push(event_organizer);
+
+        // var events_statuses = [];
+        var event_status = '{{ ev.event_status }}';
+        events_statuses.push(event_status);
+
+
+      {% endfor %}
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ key }}&signed_in=true&callback=initMap"></script>
+  </body>
+</html>

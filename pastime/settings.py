@@ -25,8 +25,8 @@ SECRET_KEY = 'ni&4z+!l7m@oh$76s-2%z^5$o@qsn3_)jsbq=9$4-4wqr8g$sg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['student.bsmtu.cloud',
+                '127.0.0.1']
 
 # Application definition
 

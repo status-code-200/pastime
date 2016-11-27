@@ -5,15 +5,14 @@ from .forms import EventForm
 from .models import Event, APIKey
 
 def logUserIn(request):
-    username = request.POST['username']
+    username_or_email = request.POST['username_or_email']
     password = request.POST['password']
-    user = authenticate(username=username, password=password)
+    user = authenticate(username=username_or_email, password=password)
     if user is not None:
         # the password verified for the user
         if user.is_active:
             login(request, user)
             print("User is valid, active and authenticated")
-
         else:
             print("The password is valid, but the account has been disabled!")
     else:

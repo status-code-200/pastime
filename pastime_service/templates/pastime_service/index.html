@@ -46,11 +46,11 @@
     <dialog class="mdl-dialog" style="margin: 0 auto;">
       <h6 class="mdl-dialog__title" style="text-align: center; font-family: 'Noto Sans';">Вход</h6>
       <div class="mdl-dialog__content">
-        <form id="form-login" action="{% url 'login' %}" method="POST" accept-charset="UTF-8">
+        <form id="form-login" action="{% url 'logUserIn' %}" method="POST" accept-charset="UTF-8">
           {% csrf_token %}
           <div class="input-field col s12 required">
-            <label class="mdl-textfield__label"  for="username" style="text-align: center;">Логин</label>
-            <input class="mdl-textfield__input" type="text" name="username" value="" id="username"/>
+            <label class="mdl-textfield__label"  for="username_or_email" style="text-align: center;">Логин или Email</label>
+            <input class="mdl-textfield__input" type="text" name="username_or_email" value="" id="username_or_email"/>
           </div>
         </br>
           <div class="input-field col s12 required">

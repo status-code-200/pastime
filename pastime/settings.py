@@ -41,7 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pastime_service',
+    'accounts',
     'material',
+]
+
+AUTH_USER_MODEL = 'accounts.CustomizedUser'
+AUTHENTICATION_BACKENDS = [
+    'accounts.auth_backends.SettingsBackend',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +86,12 @@ WSGI_APPLICATION = 'pastime.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_pastime_db',
+        'USER' : 'django_pastime',
+        'PASSWORD' : 'qwerty123',
+        'HOST' : '127.0.0.1',
+        'PORT' : '5432',
     }
 }
 
@@ -95,6 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 9,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',

@@ -19,4 +19,4 @@ before_script:
  - python manage.py makemigrations pastime_service
  - python manage.py migrate
 script:
- - python manage.py test -k
+ - python manage.py test pastime_service.tests -k

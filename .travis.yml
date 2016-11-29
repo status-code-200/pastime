@@ -6,8 +6,6 @@ addons:
 env:
   - DB_NAME=django_pastime_db DB_USER=django_pastime DB_PASS=qwerty123
 before_install:
-  - export DJANGO_SETTINGS_MODULE=settings.local
-  - export PYTHONPATH=$HOME/builds/me/myrepo
   - export DATABASE_URL="postgres://django_pastime:qwerty123@127.0.0.1:5432/django_pastime_db"
 install:
  - pip install -r requirements.txt

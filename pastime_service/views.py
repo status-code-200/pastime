@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+
 from .forms import EventForm
 from .models import Event, APIKey
+
 
 def logUserIn(request):
     username_or_email = request.POST['username_or_email']
@@ -16,15 +18,17 @@ def logUserIn(request):
         else:
             print("The password is valid, but the account has been disabled!")
     else:
-        # the authentication system was unable to verify the username and password
+        # the authentication system was unable to verify the username and pass
         print("The username and password were incorrect.")
 
     response = render(request, 'pastime_service/index.html', {})
     return response
 
+
 def logUserOut(request):
     logout(request)
     return redirect('/')
+
 
 def index(request):
     if request.user.is_authenticated and request.method == "POST":
@@ -35,6 +39,16 @@ def index(request):
     else:
         form = EventForm(initial={'organizer': request.user.username})
         events = Event.objects.all()
-        key = APIKey.objects.get(key_name='google_api_maps_js')
+        try:
+            key = APIKey.objects.get(key_name='google_api_maps_js')
+        except APIKey.DoesNotExist:
+            return render(request,
+                          'pastime_service/index.html',
+                          {'form': form,
+                           'events': events
+                           })
 
-    return render(request, 'pastime_service/index.html', {'form': form, 'events': events, 'key': key.key})
+    return render(request, 'pastime_service/index.html', {'form': form,
+                                                          'events': events,
+                                                          'key': key.key
+                                                          })

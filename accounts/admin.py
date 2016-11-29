@@ -6,12 +6,14 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from accounts.models import CustomizedUser
 
+
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
-
+    fields, plus a repeated password.
+    """
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation',
+                                widget=forms.PasswordInput)
 
     class Meta:
         model = CustomizedUser
@@ -33,6 +35,7 @@ class UserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+
 class UserChangeForm(forms.ModelForm):
     """A form for updating users. Includes all the fields on
     the user, but replaces the password field with admin's
@@ -50,6 +53,7 @@ class UserChangeForm(forms.ModelForm):
         # field does not have access to the initial value
         return self.initial["password"]
 
+
 @admin.register(CustomizedUser)
 class CustomizedUserAdmin(UserAdmin):
     # The forms to add and change user instances
@@ -59,7 +63,8 @@ class CustomizedUserAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('username', 'email', 'vk_page', 'date_of_birth', 'is_admin')
+    list_display = ('username', 'email', 'vk_page',
+                    'date_of_birth', 'is_admin')
     list_filter = ('is_admin',)
 
     fieldsets = (
@@ -74,8 +79,9 @@ class CustomizedUserAdmin(UserAdmin):
     add_fieldsets = (
        (None, {
            'classes': ('wide',),
-           'fields': ('username', 'email', 'vk_page', 'date_of_birth', 'password1', 'password2')}
-       ),
+           'fields': ('username', 'email', 'vk_page',
+                      'date_of_birth', 'password1', 'password2')}
+        ),
     )
     add_readonly_fields = ()
 

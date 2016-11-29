@@ -1,3 +1,6 @@
 Django==1.10.3
 django-material==0.10.0
 psycopg2==2.6.2
+py==1.4.31
+pytest==3.0.4
+requests==2.12.1

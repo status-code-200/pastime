@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class CustomizedUserManager(BaseUserManager):
     def create_user(self, username, email, password, date_of_birth=None):
-        if not email or username or password:
+        if not email or not username or not password:
             raise ValueError('Not all required fields was filled')
 
         user = self.model(

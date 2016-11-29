@@ -13,7 +13,8 @@ before_script:
  - psql -U postgres -c 'CREATE DATABASE django_pastime_db;'
  - psql -U postgres -c "CREATE USER django_pastime WITH PASSWORD 'qwerty123';"
  - psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE django_pastime_db to django_pastime;"
-
+ - python manage.py makemigrations accounts
+ - python manage.py makemigrations pastime_service
  - python manage.py migrate
 script:
  - python manage.py test

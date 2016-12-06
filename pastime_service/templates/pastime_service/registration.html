@@ -1,0 +1,39 @@
+<form method="POST" id="registration-form" action="/registration/" novalidate>{% csrf_token %}
+
+  <div class="fieldWrapper">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-bottom: 10px;">
+      <label class="mdl-textfield__label" for="registration_username" style="text-align: center;">Имя пользователя</label>
+      {{ form.username }}
+      <span class="mdl-textfield__error" id="input-error-registration_username" style="text-align: center;"></span>
+    </div>
+  </div>
+
+  <div class="fieldWrapper">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-bottom: 10px;">
+      <label class="mdl-textfield__label" for="registration_email" style="text-align: center;">E-mail</label>
+      {{ form.email }}
+      <span class="mdl-textfield__error" id="input-error-registration_email" style="text-align: center;"></span>
+    </div>
+  </div>
+
+  <div class="fieldWrapper">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-bottom: 10px;">
+      <label class="mdl-textfield__label" for="registration_password1" style="text-align: center;">Пароль</label>
+      {{ form.password1 }}
+      <span class="mdl-textfield__error" id="input-error-registration_password1" style="text-align: center;"></span>
+    </div>
+  </div>
+
+  <div class="fieldWrapper">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-bottom: 10px;">
+      <label class="mdl-textfield__label" for="registration_password2" style="text-align: center;">И ещё разок пароль ;)</label>
+      {{ form.password2 }}
+      <span class="mdl-textfield__error" id="input-error-registration_password2" style="text-align: center;"></span>
+    </div>
+  </div>
+
+  <div class="mdl-dialog__actions mdl-dialog__actions--full-width">
+    <button id="bnt-change-color-register" name="submit" type="submit" class="save mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="text-align: center; font-family: 'Noto Sans';">Присоединиться</button>
+    <button type="button" class="close-2 mdl-button mdl-js-button" style="text-align: center; font-family: 'Noto Sans'; margin-top: 5px;">Закрыть</button>
+  </div>
+</form>

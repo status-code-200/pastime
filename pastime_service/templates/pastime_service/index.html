@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load material_form %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -19,81 +18,309 @@
     <link rel="stylesheet" href="{% static 'custom/css/main.css' %}">
     <script type="text/javascript" src="{% static 'custom/js/main.js' %}"></script>
 
-    {% include 'material/includes/material_css.html' %}
-    <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
-    {% include 'material/includes/material_js.html' %}
-
+    <script src="{% static 'js/jquery-3.1.1.js' %}"></script>
     </head>
+    
   <body>
-
     {% if user.is_authenticated %}
 
-    <dialog class="mdl-dialog" style="width: 50%; margin: 0 auto;">
+    <dialog id="create-event-dialog" class="mdl-dialog" style="width: 50%; margin: 0 auto;">
       <h6 class="mdl-dialog__title" style="font-family: 'Noto Sans';">Создать событие</h6>
       <div class="mdl-dialog__content">
-        <form method="POST">{% csrf_token %}
-          {% form %}{% endform %}
-          <div class="mdl-dialog__actions mdl-dialog__actions">
-            <button type="submit" class="save btn mdl-button" style="font-family: 'Noto Sans';">Создать</button>
-            <button type="button" class="mdl-button close" style="font-family: 'Noto Sans';">Закрыть</button>
+          <div id="ce-container">
+            {% include 'pastime_service/event.html' %}
           </div>
-        </form>
       </div>
     </dialog>
 
     {% else %}
 
     <dialog class="mdl-dialog" style="margin: 0 auto;">
-      <h6 class="mdl-dialog__title" style="text-align: center; font-family: 'Noto Sans';">Вход</h6>
-      <div class="mdl-dialog__content">
-        <form id="form-login" action="{% url 'logUserIn' %}" method="POST" accept-charset="UTF-8">
-          {% csrf_token %}
-          <div class="input-field col s12 required">
-            <label class="mdl-textfield__label"  for="username_or_email" style="text-align: center;">Логин или Email</label>
-            <input class="mdl-textfield__input" type="text" name="username_or_email" value="" id="username_or_email"/>
+
+      <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+        <div class="mdl-tabs__tab-bar">
+            <a href="#login-panel" class="mdl-tabs__tab is-active">Войти</a>
+            <a href="#registration-panel" class="mdl-tabs__tab">Зарегистрироваться</a>
+        </div>
+
+        <div class="mdl-tabs__panel is-active" id="login-panel">
+          <div class="mdl-dialog__content">
+            {% include 'pastime_service/login.html' %}
+
           </div>
-        </br>
-          <div class="input-field col s12 required">
-            <label class="mdl-textfield__label" for="password" style="text-align: center;">Пароль</label>
-            <input class="mdl-textfield__input" name="password" type="password" value="" id="password"/>
+        </dialog>
+        </div>
+        <div class="mdl-tabs__panel" id="registration-panel">
+          <div class="mdl-dialog__content">
+            {% with form=registration_form %}
+            {% include 'pastime_service/registration.html' %}
+            {% endwith %}
           </div>
-          <div class="mdl-dialog__actions mdl-dialog__actions--full-width">
-            <button type="submit" class="save btn mdl-button" style="font-family: 'Noto Sans';">Зайти</button>
-            <button type="button" class="mdl-button close" style="text-align: center; font-family: 'Noto Sans';">Закрыть</button>
-          </div>
-        </form>
+        </div>
       </div>
+
+
     </dialog>
 
     {% endif %}
+
+    <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+      <div class="mdl-snackbar__text"></div>
+      <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+    <script>
+    (function() {
+      'use strict';
+      window['counter'] = 0;
+      var snackbarContainer = document.querySelector('#demo-toast-example');
+      var showToastButton = document.querySelector('#demo-show-toast');
+      showToastButton.addEventListener('click', function() {
+        'use strict';
+        var data = {message: 'Example Message # ' + ++counter};
+        snackbarContainer.MaterialSnackbar.showSnackbar(data);
+      });
+    }());
+    </script>
 
 
 
     <div id="map"></div>
       <div class="panel">
           {% if user.is_authenticated %}
-          <button id="bnt-change-color" type="button" class="mdl-button mdl-button--raised mdl-js-button btn show-modal" style="font-family: 'Noto Sans';">Создать яркое событие</button>
-          <a href="{% url 'logUserOut' %}" class="mdl-button btn" style="font-family: 'Noto Sans';">Выйти</a>
+          <button id="bnt-change-color" type="button" class="show-modal mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" style="font-family: 'Noto Sans';">Создать яркое событие</button>
+          <a href="{% url 'logUserOut' %}" class="mdl-button mdl-button--raised mdl-js-button mdl-js-ripple-effect" style="font-family: 'Noto Sans';">Выйти</a>
           {% else %}
-          <button type="button" class="mdl-button  mdl-button--raised mdl-js-button btn mdl-js-button show-modal" style="font-family: 'Noto Sans';">Принять участие</button>
+          <button type="button" class="show-modal mdl-button mdl-button--raised mdl-js-button mdl-js-ripple-effect mdl-button--accent" style="font-family: 'Noto Sans';">Принять участие</button>
           {% endif %}
       </div>
+      {% if user.is_authenticated %}
+      <script>
+        // AJAX for posting
+        function create_post() {
+          function display_form_errors(errors, $form) {
+            errors_objects = JSON.parse(errors);
+              for (var k in errors_objects) {
+                var ele = document.getElementById(k)
+                ele.parentElement.className += ' is-invalid';
+                document.getElementById('input-error-' + k).textContent = errors_objects[k][0];
+              }
+          }
+          $.ajax({
+              url : "create_event/", // the endpoint
+              type : "POST", // http method
+              data : {
+                organizer : $('#event_organizer').val(),
+                event_name : $('#event_name').val(),
+                event_description : $('#event_description').val(),
+                event_status : $('#event_status').val(),
+                event_location : $('#event_location').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+              }, // data sent with the post request
+
+              // handle a successful response
+              success : function(json) {
+                var dialog = document.querySelector('.mdl-dialog');
+                dialog.close();
+
+                var latlng = $('#event_location').val();
+                var lat_lng = latlng.slice(1, latlng.length-1).split(', ');
+
+                var pt = new google.maps.LatLng(lat_lng[0], lat_lng[1]);
+                map.setCenter(pt);
+                map.setZoom(17);
+
+                $('#event_name').val(''); // remove the value from the input
+                $('#event_description').val(''); // remove the value from the input
+                $('#event_location').val(''); // remove the value from the input
+              },
+
+              // handle a non-successful response
+              error : function(xhr,errmsg,err) {
+                display_form_errors(xhr.responseText, $('#post-form'));
+              },
+          });
+        };
+      </script>
 
 
       <script>
+        // Submit post on submit
+        $(document).ready(function() {
+          //  push it to array and remove required attribute
+          let requiredComponents = document.querySelectorAll("[required]");
+          requiredComponents.forEach(function(e){
+            e.removeAttribute('required');
+          })
+          // when submit button click, add required attribute back
+          document.getElementById("bnt-change-color-create").addEventListener("click", function(){
+            requiredComponents.forEach(function(e){
+              e.setAttribute('required', true);
+            })
+          });
+          // also when form submit event
+          $('#post-form').submit(function(e) {
+            e.preventDefault();
+            requiredComponents.forEach(function(e){
+              e.setAttribute('required', true);
+            });
+            create_post();
+        });
+      })
+      </script>
+
+
+      {% else %}
+      <script>
+        // AJAX for user registration
+        function register_user() {
+          function display_form_errors(errors, $form) {
+            errors_objects = JSON.parse(errors);
+              for (var k in errors_objects) {
+                if (k == '__all__') {
+                   document.getElementById('registration_password1').parentElement.className += ' is-invalid';
+                   document.getElementById('registration_password2').parentElement.className += ' is-invalid';
+                  document.getElementById('input-error-registration_password2').textContent = 'Пароли не совпали.';
+                }
+                else {
+                  var ele = document.getElementById('registration_' + k)
+                  ele.parentElement.className += ' is-invalid';
+                  document.getElementById('input-error-registration_' + k).textContent = errors_objects[k][0];
+                }
+              }
+            }
+
+            $.ajax({
+              url : "registration/", // the endpoint
+              type : "POST", // http method
+              data : {
+                username : $('#registration_username').val(),
+                email : $('#registration_email').val(),
+                password1 : $('#registration_password1').val(),
+                password2 : $('#registration_password2').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+              }, // data sent with the post request
+
+              // handle a successful response
+              success : function(json) {
+                location.reload();
+              },
+              // handle a non-successful response
+              error : function(xhr,errmsg,err) {
+                display_form_errors(xhr.responseText, $('#registration-form'));
+              },
+            });
+
+          }
+
+          $(document).ready(function() {
+            //  push it to array and remove required attribute
+            let requiredComponents = document.querySelectorAll("[required]");
+            requiredComponents.forEach(function(e) {
+              e.removeAttribute('required');
+            })
+            // when submit button click, add required attribute back
+            document.getElementById("bnt-change-color-register").addEventListener("click", function(){
+              requiredComponents.forEach(function(e) {
+                e.setAttribute('required', true);
+              })
+            });
+            // also when form submit event
+            $('#registration-form').submit(function(e) {
+              e.preventDefault();
+              register_user();
+            });
+          })
+
+        </script>
+
+        <script>
+          // AJAX for user registration
+          function login_user() {
+            function display_form_errors(errors, $form) {
+              errors_objects = JSON.parse(errors);
+                for (var k in errors_objects) {
+                  console.log(k);
+                  if (k == '__all__') {
+                     document.getElementById('username').parentElement.className += ' is-invalid';
+                     document.getElementById('password').parentElement.className += ' is-invalid';
+                    document.getElementById('input-error-login_username').textContent = errors_objects[k][0];
+                  }
+                  else {
+                    var ele = document.getElementById(k)
+                    ele.parentElement.className += ' is-invalid';
+                    document.getElementById('input-error-login_' + k).textContent = errors_objects[k][0];
+                  }
+                }
+              }
+
+              $.ajax({
+                url : "login/", // the endpoint
+                type : "POST", // http method
+                data : {
+                  username : $('#username').val(),
+                  password : $('#password').val(),
+                  csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                }, // data sent with the post request
+
+                // handle a successful response
+                success : function(json) {
+                  console.log('ok&');
+                  location.reload();
+                },
+                // handle a non-successful response
+                error : function(xhr,errmsg,err) {
+                  display_form_errors(xhr.responseText, $('#login-form'));
+                },
+              });
+
+            }
+
+            $(document).ready(function() {
+              //  push it to array and remove required attribute
+              let requiredComponents = document.querySelectorAll("[required]");
+              requiredComponents.forEach(function(e) {
+                e.removeAttribute('required');
+              })
+              // when submit button click, add required attribute back
+              document.getElementById("btn-login").addEventListener("click", function(){
+                requiredComponents.forEach(function(e) {
+                  e.setAttribute('required', true);
+                })
+              });
+              // also when form submit event
+              $('#login-form').submit(function(e) {
+                e.preventDefault();
+                login_user();
+              });
+            })
+
+          </script>
+
+      {% endif %}
+
+      {% if user.is_authenticated %}
+      <script>
         (function() {
           'use strict';
-          var showSnackbarButton = document.querySelector('#bnt-change-color');
+          var buttonChangeColor = document.querySelector('#bnt-change-color');
+          var buttonChangeColorCreate = document.querySelector('#bnt-change-color-create');
           var handler = function(event) {
-            showSnackbarButton.style.backgroundColor = '';
+            buttonChangeColor.style.backgroundColor = '';
+            buttonChangeColorCreate.style.backgroundColor = '';
           };
-          showSnackbarButton.addEventListener('mouseover', function() {
+          buttonChangeColor.addEventListener('mouseover', function() {
             'use strict';
-            showSnackbarButton.style.backgroundColor = '#' +
+            buttonChangeColor.style.backgroundColor = '#' +
+                Math.floor(Math.random() * 0xFFFFFF).toString(16);
+          });
+          buttonChangeColorCreate.addEventListener('mouseover', function() {
+            'use strict';
+            buttonChangeColorCreate.style.backgroundColor = '#' +
                 Math.floor(Math.random() * 0xFFFFFF).toString(16);
           });
         }());
       </script>
+      {% endif %}
 
 
       <script>
@@ -106,6 +333,9 @@
           dialog.showModal();
         });
         dialog.querySelector('.close').addEventListener('click', function() {
+          dialog.close();
+        });
+        dialog.querySelector('.close-2').addEventListener('click', function() {
           dialog.close();
         });
       </script>
@@ -142,6 +372,6 @@
 
         {% endfor %}
       </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ key }}&signed_in=true&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCpy0GcVSME7c9GMVRWlNyZc6WHeNS4wI&signed_in=true&callback=initMap"></script>
   </body>
 </html>

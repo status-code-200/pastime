@@ -1,0 +1,51 @@
+<form method="POST" id="post-form" action="/create_event/" novalidate>{% csrf_token %}
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col">
+      <div class="fieldWrapper">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label class="mdl-textfield__label" for="event_name">Название мероприятия</label>
+          {{ form.event_name }}
+          <span class="mdl-textfield__error" id="input-error-event_name"></span>
+        </div>
+      </div>
+    </div>
+    <div class="mdl-cell mdl-cell--4-col">
+      <div class="fieldWrapper">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label class="mdl-textfield__label" for="event_organizer" style="text-align: center;">Организатор</label>
+          {{ form.organizer }}
+          <span class="mdl-textfield__error" id="input-error-event_organizer" style="text-align: center;"></span>
+        </div>
+      </div>
+      <div class="fieldWrapper">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label class="mdl-textfield__label" for="event_description" style="text-align: center;">Описание мероприятия</label>
+          {{ form.event_description }}
+          <span class="mdl-textfield__error" id="input-error-event_description" style="text-align: center;"></span>
+        </div>
+      </div>
+      <div class="fieldWrapper">
+        <div id="label_event_location" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label class="mdl-textfield__label" for="event_location" style="text-align: center;">Месторасположение</label>
+          {{ form.event_location }}
+          <span class="mdl-textfield__error" id="input-error-event_location" style="text-align: center;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="mdl-cell mdl-cell--4-col">
+      <div class="fieldWrapper">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label class="mdl-textfield__label" for="event_status">Форма мероприятия</label>
+          {{ form.event_status }}
+          <span class="mdl-textfield__error" id="input-error-event_status"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mdl-dialog__actions mdl-dialog__actions">
+    <button id="bnt-change-color-create" name="submit" type="submit" class="save mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="font-family: 'Noto Sans';">Создать</button>
+    <button type="button" class="close mdl-button mdl-js-button" style="font-family: 'Noto Sans';">Закрыть</button>
+    <button id="demo-show-toast" class="mdl-button mdl-js-button mdl-button--raised" type="button">Show Toast</button>
+  </div>
+</form>

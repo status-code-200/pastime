@@ -26,7 +26,6 @@ SECRET_KEY = 'ni&4z+!l7m@oh$76s-2%z^5$o@qsn3_)jsbq=9$4-4wqr8g$sg'
 DEBUG = True
 
 ALLOWED_HOSTS = ['student.bsmtu.cloud:10272',
-<<<<<<< HEAD
 		'student.bmstu.cloud:10252',
 		'student.bmstu.cloud',
 		'195.19.44.158',

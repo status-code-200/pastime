@@ -17,6 +17,10 @@ html, body {
   width: 100%;
 }
 
+.mdl-textfield__input, .mdl-textfield__label {
+	  font-family: 'Noto Sans', 'Roboto','sans-serif';
+}
+
 .panel {
   position: absolute;
   margin: auto;
@@ -32,3 +36,33 @@ html, body {
   text-align: center;
   font-family: 'Noto Sans', 'Roboto','sans-serif';
 }
+
+.mdl-textfield__error {
+	width: 100%;
+	left: 0;
+ text-align: left;
+}
+
+////////////////////////////
+/*ГРЕБАНЫЕ ПРИКОЛЫ ОГНЕЛИСА И ХРОМА*/
+/*Я МЕШАЮ ЛОЖКОЙ КОТЁЛ В КОТОРОМ ВАРЯТСЯ РАЗРАБОТЧИКИ*/
+:invalid {
+  box-shadow: none;
+}
+
+:-moz-submit-invalid {
+  box-shadow: none;
+}
+
+:-moz-ui-invalid {
+  box-shadow:none;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+*:focus {
+    outline: none;
+}
+////////////////////////////

@@ -1,40 +1,30 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
-from .forms import EventForm
-from .models import Event, APIKey
+from .forms import EventForm, LoginForm
+from .models import Event
+from .forms import RegistrationForm
+
 
 def logUserIn(request):
-    username_or_email = request.POST['username_or_email']
-    password = request.POST['password']
-    user = authenticate(username=username_or_email, password=password)
-    if user is not None:
-        # the password verified for the user
-        if user.is_active:
-            login(request, user)
-            print("User is valid, active and authenticated")
+    if request.method == 'POST':
+        form = LoginForm(request.POST or None)
+        if request.POST and form.is_valid():
+            user = form.login(request)
+            if user:
+                login(request, user)
+                return redirect('/') 
         else:
-            print("The password is valid, but the account has been disabled!")
-    else:
-        # the authentication system was unable to verify the username and password
-        print("The username and password were incorrect.")
-
-    response = render(request, 'pastime_service/index.html', {})
-    return response
+            error_message = dict([(key, [error for error in value]) for key, value in form.errors.items()])
+            return JsonResponse(error_message, status=400)
+    return redirect('/')
 
 def logUserOut(request):
     logout(request)
     return redirect('/')
 
 def index(request):
-    if request.user.is_authenticated and request.method == "POST":
-        form = EventForm(request.POST)
-        if form.is_valid():
-            event = form.save()
-            return redirect('/pastime')
-    else:
-        form = EventForm(initial={'organizer': request.user.username})
-        events = Event.objects.all()
-        key = APIKey.objects.get(key_name='google_api_maps_js')
-
-    return render(request, 'pastime_service/index.html', {'form': form, 'events': events, 'key': key.key})
+    event_form = EventForm(initial={'organizer': request.user.username})
+    registration_form = RegistrationForm()
+    events = Event.objects.all()
+    return render(request, 'pastime_service/index.html', {'form': event_form, 'events': events, 'registration_form': registration_form})

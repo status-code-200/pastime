@@ -29,7 +29,8 @@ ALLOWED_HOSTS = ['student.bsmtu.cloud:10272',
 		'student.bmstu.cloud:10252',
 		'student.bmstu.cloud',
 		'195.19.44.158',
-                '127.0.0.1']
+        '127.0.0.1',
+		'*']
 
 # Application definition
 
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pastime_service',
     'accounts',
-    'material',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomizedUser'

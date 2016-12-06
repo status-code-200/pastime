@@ -8,12 +8,20 @@ var events_descriptions = [];
 var events_organizers = [];
 var events_statuses = [];
 
+// document.onready = function () {
+//   document.querySelectorAll("input[required]").forEach(function (e) {
+//     //  .mdl-textfield.is-invalid
+//     console.log(e);
+//      e.required = true;
+//   });
+// };
 
 function initMap() {
   var haightAshbury = {lat: 55.75222, lng: 37.61556};
+  var zoom;
 
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
+    zoom: 17,
     center: haightAshbury,
     mapTypeId: google.maps.MapTypeId.TERRAIN
   });
@@ -78,10 +86,10 @@ function addMarker(location) {
   my_markers.push(marker);
   var contentString = '<div class="demo-card-wide mdl-card mdl-shadow--2dp">'+
                       '<div class="mdl-card__title mdl-card--expand">'+
-                      '<h2 class="mdl-card__title-text">'+ document.getElementById("id_event_name").value +'</h2>'+
+                      '<h2 class="mdl-card__title-text">'+ document.getElementById("event_name").value +'</h2>'+
                       '</div>'+
                       '<div class="mdl-card__supporting-text">'+
-                      document.getElementById("id_event_description").value+
+                      document.getElementById("event_description").value+
                       '</div>'+
                       '<div class="mdl-card__actions mdl-card--border">'+
                       '<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">'+
@@ -96,5 +104,9 @@ function addMarker(location) {
                       '</div>';
   addInfoWindow(marker, contentString);
 
-  document.getElementById("id_event_location").value = location;
+  document.getElementById("event_location").value = location;
+  var attribute = document.getElementById("label_event_location").getAttribute("class");
+  // document.getElementById("label_event_location").setAttribute("class", attribute + "is-dirty is-upgraded");
+  document.getElementById("label_event_location").setAttribute("class", "mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-dirty is-upgraded");
+
 }

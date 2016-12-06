@@ -9,11 +9,3 @@ class Event(models.Model):
 
     def __str__(self):
         return self.event_name
-
-class APIKey(models.Model):
-    key_name = models.CharField(max_length=20, verbose_name='обозначение ключа')
-    key = models.CharField(max_length=40, verbose_name='ключ')
-    key_description = models.TextField(verbose_name='описание ключа')
-
-    def __str__(self):
-        return self.key_description

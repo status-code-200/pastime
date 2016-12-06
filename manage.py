@@ -20,3 +20,11 @@ if __name__ == "__main__":
             )
         raise
     execute_from_command_line(sys.argv)
+
+    if 'test' in sys.argv and sys.argv.index('test') == 1:
+        import pytest
+        sys.argv.pop(1)
+        sys.exit(pytest.main())
+    else:
+        from django.core.management import execute_from_command_line
+        execute_from_command_line(sys.argv)

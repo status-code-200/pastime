@@ -13,7 +13,7 @@ def logUserIn(request):
             user = form.login(request)
             if user:
                 login(request, user)
-                return redirect('/') 
+                return redirect('/')
         else:
             error_message = dict([(key, [error for error in value]) for key, value in form.errors.items()])
             return JsonResponse(error_message, status=400)

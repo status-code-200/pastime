@@ -26,6 +26,7 @@ SECRET_KEY = 'ni&4z+!l7m@oh$76s-2%z^5$o@qsn3_)jsbq=9$4-4wqr8g$sg'
 DEBUG = True
 
 ALLOWED_HOSTS = ['student.bsmtu.cloud:10272',
+<<<<<<< HEAD
 		'student.bmstu.cloud:10252',
 		'student.bmstu.cloud',
 		'195.19.44.158',
@@ -134,6 +135,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [

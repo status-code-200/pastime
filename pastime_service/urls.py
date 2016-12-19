@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^logout/$', views.logUserOut, name='logUserOut'),
     url(r'^create_event/$', EventFormTemplate.as_view(), name='create_event'),
     url(r'^registration/$', RegistrationFormTemplate.as_view(), name='registration'),
+    url(r'^join_event/$', views.join_event, name='join_event'),
 
     url(r'^$', views.index, name='index'),
 ]

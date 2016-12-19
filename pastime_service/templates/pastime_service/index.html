@@ -74,6 +74,7 @@
           {% endif %}
       </div>
       {% if user.is_authenticated %}
+
       <script>
         // AJAX for posting
         function create_post() {
@@ -94,6 +95,7 @@
                 event_description : $('#event_description').val(),
                 event_status : $('#event_status').val(),
                 event_location : $('#event_location').val(),
+                event_number_of_persons : $('#event_number_of_persons').val(),
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
               }, // data sent with the post request
 
@@ -112,6 +114,7 @@
                 $('#event_name').val(''); // remove the value from the input
                 $('#event_description').val(''); // remove the value from the input
                 $('#event_location').val(''); // remove the value from the input
+                $('#event_number_of_persons').val(''); // remove the value from the input
               },
 
               // handle a non-successful response
@@ -244,7 +247,6 @@
 
                 // handle a successful response
                 success : function(json) {
-                  console.log('ok&');
                   location.reload();
                 },
                 // handle a non-successful response
@@ -300,6 +302,7 @@
           });
         }());
       </script>
+
       {% endif %}
 
 
@@ -320,7 +323,17 @@
         });
       </script>
       <script>
+      // var events_on_map = [];
         {% for ev in events %}
+          events_on_map.push({
+            'event_id': '{{ ev.id }}',
+            'event_name': '{{ ev.event_name }}',
+            'event_organizer': '{{ ev.organizer }}',
+            'event_description': '{{ ev.event_description }}',
+            'event_number_of_persons': '{{ ev.event_number_of_persons }}',
+            'event_persons': '{{ ev.event_persons}}'
+          });
+
           var event_location = '{{ ev.event_location }}';
 
           var lat_lng = event_location.slice(1, event_location.length-1).split(', ');
@@ -351,6 +364,7 @@
 
 
         {% endfor %}
+        console.log(events_on_map);
       </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCpy0GcVSME7c9GMVRWlNyZc6WHeNS4wI&signed_in=true&callback=initMap"></script>
   </body>

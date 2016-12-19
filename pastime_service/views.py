@@ -4,6 +4,14 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import EventForm, LoginForm
 from .models import Event
 from .forms import RegistrationForm
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def join_event(request):
+    if request.method == 'POST':
+        print(dir(request))
+        print(request.user.id)
+    return JsonResponse({})
 
 
 def logUserIn(request):

@@ -21,9 +21,11 @@ class UserCreationForm(forms.ModelForm):
             raise forms.ValidationError("Passwords don't match")
         return password2
 
+
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super(UserCreationForm, self).save(commit=False)
+        user.email = self.cleaned_data.get('email').lower()
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()

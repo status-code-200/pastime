@@ -1,3 +1,4 @@
+<a href="{% url 'social:begin' 'vk-oauth2' %}?next={{ request.path }}">Login with VK</a>
 <form id="login-form" action="/login/" method="POST" accept-charset="UTF-8">
   {% csrf_token %}
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-bottom: 10px;">

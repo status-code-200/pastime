@@ -5,3 +5,4 @@ uwsgi==2.0.14
 py==1.4.31
 pytest==3.0.4
 requests==2.12.1
+python-social-auth==0.2.21

@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^logout/$', views.logUserOut, name='logUserOut'),
     url(r'^create_event/$', EventFormTemplate.as_view(), name='create_event'),
     url(r'^registration/$', RegistrationFormTemplate.as_view(), name='registration'),
+    url('', include('social.apps.django_app.urls', namespace='social')),
 
     url(r'^$', views.index, name='index'),
 ]

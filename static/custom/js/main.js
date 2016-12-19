@@ -7,6 +7,7 @@ var events_names = [];
 var events_descriptions = [];
 var events_organizers = [];
 var events_statuses = [];
+var events_on_map = [];
 
 // document.onready = function () {
 //   document.querySelectorAll("input[required]").forEach(function (e) {
@@ -15,6 +16,8 @@ var events_statuses = [];
 //      e.required = true;
 //   });
 // };
+
+
 
 function initMap() {
   var haightAshbury = {lat: 55.75222, lng: 37.61556};
@@ -42,9 +45,7 @@ function initMap() {
                         '<b>Организатор:</b> ' + events_organizers[i] + '</br>' + events_descriptions[i]+
                         '</div>'+
                         '<div class="mdl-card__actions mdl-card--border">'+
-                        '<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">'+
-                        'Присоединиться'+
-                        '</a>'+
+                        '<input type="button" id="join_event" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" value="Enviar Mail">  '
                         '</div>'+
                         '<div class="mdl-card__menu">'+
                         '<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">'+
@@ -68,6 +69,9 @@ function addInfoWindow(marker, message) {
   });
   google.maps.event.addListener(marker, 'click', function () {
     infoWindow.open(map, marker);
+    document.getElementById("join_event").addEventListener("click", function(){
+      join_event();
+    });
   });
 }
 
@@ -92,9 +96,9 @@ function addMarker(location) {
                       document.getElementById("event_description").value+
                       '</div>'+
                       '<div class="mdl-card__actions mdl-card--border">'+
-                      '<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">'+
+                      '<button id="join_event" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">'+
                       'Присоединиться'+
-                      '</a>'+
+                      '</button>'+
                       '</div>'+
                       '<div class="mdl-card__menu">'+
                       '<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">'+
@@ -109,4 +113,27 @@ function addMarker(location) {
   // document.getElementById("label_event_location").setAttribute("class", attribute + "is-dirty is-upgraded");
   document.getElementById("label_event_location").setAttribute("class", "mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-dirty is-upgraded");
 
+}
+
+function join_event() {
+  $.ajax({
+    url : "join_event/", // the endpoint
+    type : "POST", // http method
+    data : {
+      // username : $('#username').val(),
+      // password : $('#password').val(),
+      csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+    }, // data sent with the post request
+
+    // handle a successful response
+    success : function(json) {
+      console.log('ok');
+      // location.reload();
+    },
+    // handle a non-successful response
+    error : function(xhr,errmsg,err) {
+      // display_form_errors(xhr.responseText, $('#login-form'));
+      console.log('not ok');
+    },
+  });
 }

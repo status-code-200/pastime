@@ -5,8 +5,9 @@ from django.http import JsonResponse
 from django.views.generic.edit import FormView
 
 from django.contrib.auth import authenticate, login
-
 from accounts.forms import UserCreationForm
+
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=20, required=True)
@@ -32,6 +33,7 @@ class EventForm(forms.Form):
     event_description = forms.CharField(widget=forms.Textarea(attrs={'id': 'event_description', 'class': "mdl-textfield__input", 'style':'resize:none;'}),  label='Описание мероприятия', help_text='100 characters max.')
     event_status = forms.ChoiceField(choices=(('open', 'открытое'), ('closed', 'закрытое')), label='Форма мероприятия', widget=forms.Select(attrs={'id': 'event_status', 'class': "mdl-textfield__input"}))
     event_location = forms.CharField(max_length=1000, label='Месторасположение', widget=forms.TextInput(attrs={'id': 'event_location', 'readonly':'readonly', 'class': "mdl-textfield__input"}))
+    event_number_of_persons = forms.IntegerField(validators=[MinValueValidator(2), MaxValueValidator(100)], label='количество человек', widget=forms.TextInput(attrs={'type':'number', 'id': 'event_number_of_persons', 'class': "mdl-textfield__input"}))
 
     def save(self):
         data = self.cleaned_data

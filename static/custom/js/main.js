@@ -45,7 +45,7 @@ function initMap() {
                         '<b>Организатор:</b> ' + events_organizers[i] + '</br>' + events_descriptions[i]+
                         '</div>'+
                         '<div class="mdl-card__actions mdl-card--border">'+
-                        '<input type="button" id="join_event" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" value="Enviar Mail">  '
+                        '<input type="button" id="join_event" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" value="Join event">  '
                         '</div>'+
                         '<div class="mdl-card__menu">'+
                         '<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">'+

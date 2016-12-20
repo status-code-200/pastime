@@ -6,6 +6,7 @@ from .models import Event
 from .forms import RegistrationForm
 from django.contrib.auth.decorators import login_required
 
+
 @login_required
 def join_event(request):
     if request.method == 'POST':
@@ -14,7 +15,7 @@ def join_event(request):
     return JsonResponse({})
 
 
-def logUserIn(request):
+def log_user_in(request):
     if request.method == 'POST':
         form = LoginForm(request.POST or None)
         if request.POST and form.is_valid():
@@ -27,9 +28,11 @@ def logUserIn(request):
             return JsonResponse(error_message, status=400)
     return redirect('/')
 
-def logUserOut(request):
+
+def log_user_out(request):
     logout(request)
     return redirect('/')
+
 
 def index(request):
     event_form = EventForm(initial={'organizer': request.user.username})

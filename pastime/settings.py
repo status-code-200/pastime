@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -26,11 +25,11 @@ SECRET_KEY = 'ni&4z+!l7m@oh$76s-2%z^5$o@qsn3_)jsbq=9$4-4wqr8g$sg'
 DEBUG = True
 
 ALLOWED_HOSTS = ['student.bsmtu.cloud:10272',
-		'student.bmstu.cloud:10252',
-		'student.bmstu.cloud',
-		'195.19.44.158',
-        '127.0.0.1',
-		'*']
+                 'student.bmstu.cloud:10252',
+                 'student.bmstu.cloud',
+                 '195.19.44.158',
+                 '127.0.0.1',
+                 '*']
 
 # Application definition
 
@@ -57,24 +56,23 @@ SOCIAL_AUTH_VK_OAUTH2_KEY = '5785363'
 SOCIAL_AUTH_VK_OAUTH2_SECRET = 'jBNhNpTJJEzje2MowDZs'
 
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = [
-  'notify',
-  'friends',
-  'email',
+    'notify',
+    'friends',
+    'email',
 ]
 
 SOCIAL_AUTH_PIPELINE = (
-'social.pipeline.social_auth.social_details',
-'social.pipeline.social_auth.social_uid',
-'social.pipeline.social_auth.auth_allowed',
-'social.pipeline.social_auth.social_user',
-'social.pipeline.user.get_username',
-'social.pipeline.social_auth.associate_by_email',  # <--- enable this one
-'social.pipeline.user.create_user',
-'social.pipeline.social_auth.associate_user',
-'social.pipeline.social_auth.load_extra_data',
-'social.pipeline.user.user_details',
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email',  # <--- enable this one
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
 )
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -108,7 +106,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pastime.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -116,13 +113,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'django_pastime_db',
-        'USER' : 'django_pastime',
-        'PASSWORD' : 'qwerty123',
-        'HOST' : '127.0.0.1',
-        'PORT' : '5432',
+        'USER': 'django_pastime',
+        'PASSWORD': 'qwerty123',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -145,7 +141,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -158,7 +153,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/

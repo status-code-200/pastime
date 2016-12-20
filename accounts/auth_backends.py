@@ -6,6 +6,7 @@ class SettingsBackend(object):
     Custom implementation of auth backend.
     username field can be as either a username or email
     '''
+
     def authenticate(self, username=None, password=None):
         '''
         Username field can be as either a username or email.
@@ -25,7 +26,8 @@ class SettingsBackend(object):
         except CustomizedUser.DoesNotExist:
             return None
 
-    def get_user(self, user_id):
+    @staticmethod
+    def get_user(user_id):
         try:
             return CustomizedUser.objects.get(pk=user_id)
         except CustomizedUser.DoesNotExist:

@@ -1,13 +1,13 @@
 from django import forms
-from .models import Event
-from accounts.models import CustomizedUser
+from django.contrib.auth import authenticate, login
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.http import JsonResponse
 from django.views.generic.edit import FormView
 
-from django.contrib.auth import authenticate, login
 from accounts.forms import UserCreationForm
+from accounts.models import CustomizedUser
+from .models import Event
 
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=20, required=True)
@@ -27,13 +27,40 @@ class LoginForm(forms.Form):
         user = authenticate(username=username, password=password)
         return user
 
+
 class EventForm(forms.Form):
-    organizer = forms.CharField(label='Организатор', widget=forms.TextInput(attrs={'id': 'event_organizer', 'readonly':'readonly', 'class': "mdl-textfield__input"}))
-    event_name = forms.CharField(label='Название мероприятия', widget=forms.TextInput(attrs={'id': 'event_name', 'class': "mdl-textfield__input"}))
-    event_description = forms.CharField(widget=forms.Textarea(attrs={'id': 'event_description', 'class': "mdl-textfield__input", 'style':'resize:none;'}),  label='Описание мероприятия', help_text='100 characters max.')
-    event_status = forms.ChoiceField(choices=(('open', 'открытое'), ('closed', 'закрытое')), label='Форма мероприятия', widget=forms.Select(attrs={'id': 'event_status', 'class': "mdl-textfield__input"}))
-    event_location = forms.CharField(max_length=1000, label='Месторасположение', widget=forms.TextInput(attrs={'id': 'event_location', 'readonly':'readonly', 'class': "mdl-textfield__input"}))
-    event_number_of_persons = forms.IntegerField(validators=[MinValueValidator(2), MaxValueValidator(100)], label='количество человек', widget=forms.TextInput(attrs={'type':'number', 'id': 'event_number_of_persons', 'class': "mdl-textfield__input"}))
+    organizer = forms.CharField(
+            label='Организатор',
+            widget=forms.TextInput(attrs={'id': 'event_organizer',
+                                          'readonly':'readonly',
+                                          'class': "mdl-textfield__input"}))
+    event_name = forms.CharField(
+            label='Название мероприятия',
+            widget=forms.TextInput(attrs={'id': 'event_name',
+                                          'class': "mdl-textfield__input"}))
+    event_description = forms.CharField(
+            widget=forms.Textarea(attrs={'id': 'event_description',
+                                         'class': "mdl-textfield__input",
+                                         'style':'resize:none;'}),
+            label='Описание мероприятия',
+            help_text='100 characters max.')
+    event_status = forms.ChoiceField(
+            choices=(('open', 'открытое'), ('closed', 'закрытое')),
+            label='Форма мероприятия',
+            widget=forms.Select(attrs={'id': 'event_status',
+                                       'class': "mdl-textfield__input"}))
+    event_location = forms.CharField(
+            max_length=1000,
+            label='Месторасположение',
+            widget=forms.TextInput(attrs={'id': 'event_location',
+                                          'readonly':'readonly',
+                                          'class': "mdl-textfield__input"}))
+    event_number_of_persons = forms.IntegerField(
+            validators=[MinValueValidator(2), MaxValueValidator(100)],
+            label='количество человек',
+            widget=forms.TextInput(attrs={'type':'number',
+                                          'id': 'event_number_of_persons',
+                                          'class': "mdl-textfield__input"}))
 
     def save(self):
         data = self.cleaned_data
@@ -42,11 +69,23 @@ class EventForm(forms.Form):
 
 
 class RegistrationForm(forms.ModelForm):
-    username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(attrs={'id': 'registration_username', 'class': "mdl-textfield__input"}))
-    email = forms.EmailField(label='E-mail', widget=forms.TextInput(attrs={'id': 'registration_email', 'class': "mdl-textfield__input"}))
+    username = forms.CharField(
+            label='Имя пользователя',
+            widget=forms.TextInput(attrs={'id': 'registration_username',
+                                          'class': "mdl-textfield__input"}))
+    email = forms.EmailField(
+            label='E-mail',
+            widget=forms.TextInput(attrs={'id': 'registration_email',
+                                          'class': "mdl-textfield__input"}))
 
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'registration_password1', 'class': "mdl-textfield__input"}), label="Password")
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'registration_password2', 'class': "mdl-textfield__input"}), label="Password (again)")
+    password1 = forms.CharField(
+            widget=forms.PasswordInput(attrs={'id': 'registration_password1',
+                                              'class': "mdl-textfield__input"}),
+            label="Password")
+    password2 = forms.CharField\
+        (widget=forms.PasswordInput(attrs={'id': 'registration_password2',
+                                           'class': "mdl-textfield__input"}),
+         label="Password (again)")
 
     class Meta:
         model = CustomizedUser

@@ -1,4 +1,6 @@
-<a href="{% url 'social:begin' 'vk-oauth2' %}?next={{ request.path }}">Login with VK</a>
+<div style="text-align: center;">
+<a href="{% url 'social:begin' 'vk-oauth2' %}?next={{ request.path }}" class="mdl-button mdl-button--raised mdl-js-button mdl-button--accent" style="text-align: center; text-align: center; font-family: 'Noto Sans'; margin-top: 5px;">Login with VK</a>
+</div>
 <form id="login-form" action="/login/" method="POST" accept-charset="UTF-8">
   {% csrf_token %}
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-bottom: 10px;">
@@ -15,5 +17,5 @@
   <div class="mdl-dialog__actions mdl-dialog__actions--full-width">
     <button id='btn-login' type="submit" class="save mdl-button mdl-button--raised mdl-js-button mdl-button--accent" style="text-align: center; font-family: 'Noto Sans';">Зайти</button>
     <button type="button" class="close mdl-button mdl-js-button" style="text-align: center; font-family: 'Noto Sans'; margin-top: 5px;">Закрыть</button>
-  </div>
+ </div>
 </form>
